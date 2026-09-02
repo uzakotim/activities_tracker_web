@@ -62,8 +62,8 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-[#0B132B] text-white flex flex-col selection:bg-blue-500 selection:text-white relative">
       {/* Background ambient lighting */}
-      <div className="fixed top-0 left-1/4 w-96 h-96 bg-blue-600/10 rounded-full blur-[140px] pointer-events-none" />
-      <div className="fixed bottom-10 right-1/4 w-96 h-96 bg-indigo-600/10 rounded-full blur-[140px] pointer-events-none" />
+      <div className="fixed top-0 left-1/4 w-96 h-96 bg-blue-600/10 rounded-4xl blur-[140px] pointer-events-none" />
+      <div className="fixed bottom-10 right-1/4 w-96 h-96 bg-indigo-600/10 rounded-4xl blur-[140px] pointer-events-none" />
 
       {/* Top Navigation */}
       <Navbar
