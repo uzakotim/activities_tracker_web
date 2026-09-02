@@ -62,6 +62,9 @@ export function ActivityInputTracker({ onActivitySaved }: { onActivitySaved?: ()
   // Active timer state
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
   const [isSaving, setIsSaving] = useState(false);
+  // Local reference timestamp to avoid server/client clock skew.
+  // Set to Date.now() whenever a session starts or resumes on this client.
+  const localTimerRefAt = useRef<number | null>(null);
 
   // Real-time AI classification query for current input
   const aiClassification = useQuery(
@@ -86,6 +89,8 @@ export function ActivityInputTracker({ onActivitySaved }: { onActivitySaved?: ()
 
     if (!activeSession) {
       setElapsedSeconds(0);
+      // Clear local ref so next session always starts fresh.
+      localTimerRefAt.current = null;
       return;
     }
 
@@ -97,16 +102,18 @@ export function ActivityInputTracker({ onActivitySaved }: { onActivitySaved?: ()
         return;
       }
 
-      const startedAt = activeSession.startedAt;
+      // Prefer the local reference timestamp captured at start/resume time
+      // to avoid server/client clock skew (especially visible on mobile).
+      // Fall back to the server timestamp only when opening the page with
+      // an already-running session (localTimerRefAt not available).
+      const refTime = localTimerRefAt.current ?? activeSession.startedAt;
 
-      // Prevent Safari/date precision issues from producing an
-      // unexpected initial value.
-      if (!startedAt || !Number.isFinite(startedAt)) {
+      if (!refTime || !Number.isFinite(refTime)) {
         setElapsedSeconds(accumulated);
         return;
       }
 
-      const diff = Math.max(0, Math.floor((Date.now() - startedAt) / 1000));
+      const diff = Math.max(0, Math.floor((Date.now() - refTime) / 1000));
 
       setElapsedSeconds(accumulated + diff);
     };
@@ -178,6 +185,9 @@ export function ActivityInputTracker({ onActivitySaved }: { onActivitySaved?: ()
         categoryColor: selectedColor || (aiClassification?.categoryColor ?? undefined),
         categoryIcon: selectedIcon || (aiClassification?.categoryIcon ?? undefined),
       });
+      // Record the local time right after the mutation succeeds so the timer
+      // always starts from 0 on this device, regardless of server clock skew.
+      localTimerRefAt.current = Date.now();
       setActivityInput("");
       setSelectedCategory(null);
       setSelectedColor(null);
@@ -190,12 +200,16 @@ export function ActivityInputTracker({ onActivitySaved }: { onActivitySaved?: ()
 
   const handlePause = async () => {
     if (!userId) return;
+    // Clear the local ref; the paused accumulated time comes from the server.
+    localTimerRefAt.current = null;
     await pauseSessionMutation({ userId });
   };
 
   const handleResume = async () => {
     if (!userId) return;
     await resumeSessionMutation({ userId });
+    // Record local time at resume so the clock continues without skew.
+    localTimerRefAt.current = Date.now();
   };
 
   const handleStopAndSave = async () => {
