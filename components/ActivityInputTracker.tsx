@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import { useQuery, useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { useAuth } from "@/app/ConvexClientProvider";
@@ -33,6 +33,10 @@ export function ActivityInputTracker({ onActivitySaved }: { onActivitySaved?: ()
   const activeSession = useQuery(api.activities.getActiveSession, { userId });
   const recentActivities = useQuery(api.activities.getRecentActivities, { userId, limit: 10 });
   const availableCategories = useQuery(api.classify.getAvailableCategories);
+  // Stable cache-buster: a new value per page load ensures getServerTime is
+  // always computed fresh on the server instead of reusing a stale cache entry.
+  const serverTimeRequestedAt = useMemo(() => Date.now(), []);
+  const serverTime = useQuery(api.activities.getServerTime, { requestedAt: serverTimeRequestedAt });
 
   // Mutations
   const startSessionMutation = useMutation(api.activities.startActiveSession);
@@ -62,8 +66,13 @@ export function ActivityInputTracker({ onActivitySaved }: { onActivitySaved?: ()
   // Active timer state
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
   const [isSaving, setIsSaving] = useState(false);
-  // Local reference timestamp to avoid server/client clock skew.
-  // Set to Date.now() whenever a session starts or resumes on this client.
+  // Estimated offset (ms) to convert client Date.now() → Convex server time.
+  // Computed once per page load from getServerTime; corrects cross-device
+  // timer display when the device clock differs from the server clock.
+  const clockSkewMs = useRef(0);
+  // High-precision local anchor set right after start/resume on THIS device.
+  // When available it overrides the skew-corrected calculation to guarantee
+  // an exact 0:00 start without waiting for the server-time query.
   const localTimerRefAt = useRef<number | null>(null);
 
   // Real-time AI classification query for current input
@@ -82,6 +91,14 @@ export function ActivityInputTracker({ onActivitySaved }: { onActivitySaved?: ()
       // automatically preview the AI classified category
     }
   }, [aiClassification, selectedCategory]);
+
+  // Compute clock skew once the server-time query returns.
+  // clockSkewMs = serverNow - clientNow  (negative when client is ahead).
+  useEffect(() => {
+    if (serverTime != null) {
+      clockSkewMs.current = serverTime - Date.now();
+    }
+  }, [serverTime]);
 
   // Sync elapsed seconds from activeSession
   useEffect(() => {
@@ -102,18 +119,23 @@ export function ActivityInputTracker({ onActivitySaved }: { onActivitySaved?: ()
         return;
       }
 
-      // Prefer the local reference timestamp captured at start/resume time
-      // to avoid server/client clock skew (especially visible on mobile).
-      // Fall back to the server timestamp only when opening the page with
-      // an already-running session (localTimerRefAt not available).
-      const refTime = localTimerRefAt.current ?? activeSession.startedAt;
+      let diff: number;
 
-      if (!refTime || !Number.isFinite(refTime)) {
-        setElapsedSeconds(accumulated);
-        return;
+      if (localTimerRefAt.current != null) {
+        // Same page lifetime as the start/resume: use the local anchor for an
+        // exact count that never jumps due to server timestamp rounding.
+        diff = Math.max(0, Math.floor((Date.now() - localTimerRefAt.current) / 1000));
+      } else {
+        // Different device or page reload: correct client Date.now() for clock
+        // skew so both devices show the same elapsed time.
+        const serverAdjustedNow = Date.now() + clockSkewMs.current;
+        const startedAt = activeSession.startedAt;
+        if (!startedAt || !Number.isFinite(startedAt)) {
+          setElapsedSeconds(accumulated);
+          return;
+        }
+        diff = Math.max(0, Math.floor((serverAdjustedNow - startedAt) / 1000));
       }
-
-      const diff = Math.max(0, Math.floor((Date.now() - refTime) / 1000));
 
       setElapsedSeconds(accumulated + diff);
     };

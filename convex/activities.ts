@@ -22,6 +22,19 @@ export const getActiveSession = query({
 });
 
 /**
+ * Returns the Convex server's current Unix-ms timestamp.
+ * The `requestedAt` arg is a cache-buster: callers pass Date.now() once at
+ * component mount so each page load gets a fresh server-time reading instead
+ * of a stale cached result.
+ */
+export const getServerTime = query({
+  args: { requestedAt: v.number() },
+  handler: async (): Promise<number> => {
+    return Date.now();
+  },
+});
+
+/**
  * Start or replace an active stopwatch session
  */
 export const startActiveSession = mutation({
