@@ -82,33 +82,52 @@ export function ActivityInputTracker({ onActivitySaved }: { onActivitySaved?: ()
 
   // Sync elapsed seconds from activeSession
   useEffect(() => {
-    let interval: NodeJS.Timeout | null = null;
+    let interval: ReturnType<typeof setInterval> | null = null;
 
-    if (activeSession) {
-      const updateTimer = () => {
-        const now = Date.now();
-        let secs = activeSession.accumulatedSeconds || 0;
-        if (!activeSession.isPaused) {
-          const diff = Math.floor((now - activeSession.startedAt) / 1000);
-          secs += Math.max(0, diff);
-        }
-        setElapsedSeconds(secs);
-      };
-
-      updateTimer();
-
-      if (!activeSession.isPaused) {
-        interval = setInterval(updateTimer, 1000);
-      }
-    } else {
+    if (!activeSession) {
       setElapsedSeconds(0);
+      return;
+    }
+
+    const updateTimer = () => {
+      const accumulated = activeSession.accumulatedSeconds ?? 0;
+
+      if (activeSession.isPaused) {
+        setElapsedSeconds(accumulated);
+        return;
+      }
+
+      const startedAt = activeSession.startedAt;
+
+      // Prevent Safari/date precision issues from producing an
+      // unexpected initial value.
+      if (!startedAt || !Number.isFinite(startedAt)) {
+        setElapsedSeconds(accumulated);
+        return;
+      }
+
+      const diff = Math.max(0, Math.floor((Date.now() - startedAt) / 1000));
+
+      setElapsedSeconds(accumulated + diff);
+    };
+
+    // Immediately sync the display.
+    updateTimer();
+
+    if (!activeSession.isPaused) {
+      interval = setInterval(updateTimer, 1000);
     }
 
     return () => {
-      if (interval) clearInterval(interval);
+      if (interval) {
+        clearInterval(interval);
+      }
     };
-  }, [activeSession]);
-
+  }, [
+    activeSession?.startedAt,
+    activeSession?.accumulatedSeconds,
+    activeSession?.isPaused,
+  ]);
   // Close dropdowns on outside click
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
@@ -268,11 +287,10 @@ export function ActivityInputTracker({ onActivitySaved }: { onActivitySaved?: ()
       <div className="flex items-center justify-center gap-2 bg-slate-900/60 p-1 rounded-2xl border border-slate-800 w-fit mx-auto">
         <button
           onClick={() => setMode("stopwatch")}
-          className={`flex items-center gap-2 px-5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all ${
-            mode === "stopwatch"
+          className={`flex items-center gap-2 px-5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all ${mode === "stopwatch"
               ? "bg-blue-600 text-white shadow-md shadow-blue-500/30"
               : "text-slate-400 hover:text-white"
-          }`}
+            }`}
         >
           <Clock className="w-4 h-4" />
           <span>Live Stopwatch</span>
@@ -280,11 +298,10 @@ export function ActivityInputTracker({ onActivitySaved }: { onActivitySaved?: ()
 
         <button
           onClick={() => setMode("manual")}
-          className={`flex items-center gap-2 px-5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all ${
-            mode === "manual"
+          className={`flex items-center gap-2 px-5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all ${mode === "manual"
               ? "bg-blue-600 text-white shadow-md shadow-blue-500/30"
               : "text-slate-400 hover:text-white"
-          }`}
+            }`}
         >
           <Plus className="w-4 h-4" />
           <span>Manual Entry</span>
@@ -509,11 +526,10 @@ export function ActivityInputTracker({ onActivitySaved }: { onActivitySaved?: ()
                         setSelectedIcon(cat.icon);
                         setIsCategoryPickerOpen(false);
                       }}
-                      className={`flex items-center gap-2 p-2 rounded-xl text-xs font-medium border transition-all text-left ${
-                        selectedCategory === cat.name
+                      className={`flex items-center gap-2 p-2 rounded-xl text-xs font-medium border transition-all text-left ${selectedCategory === cat.name
                           ? "border-blue-500 bg-blue-500/20 text-white"
                           : "border-slate-800 hover:border-slate-700 bg-slate-950/40 text-slate-300"
-                      }`}
+                        }`}
                     >
                       <div
                         className="w-6 h-6 rounded-lg flex items-center justify-center shrink-0"
@@ -643,11 +659,10 @@ export function ActivityInputTracker({ onActivitySaved }: { onActivitySaved?: ()
                         setSelectedIcon(cat.icon);
                         setIsCategoryPickerOpen(false);
                       }}
-                      className={`flex items-center gap-2 p-2 rounded-xl text-xs font-medium border transition-all text-left ${
-                        selectedCategory === cat.name
+                      className={`flex items-center gap-2 p-2 rounded-xl text-xs font-medium border transition-all text-left ${selectedCategory === cat.name
                           ? "border-blue-500 bg-blue-500/20 text-white"
                           : "border-slate-800 hover:border-slate-700 bg-slate-950/40 text-slate-300"
-                      }`}
+                        }`}
                     >
                       <div
                         className="w-6 h-6 rounded-lg flex items-center justify-center shrink-0"
