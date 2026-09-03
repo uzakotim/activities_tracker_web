@@ -25,7 +25,13 @@ import {
   AlertCircle,
 } from "lucide-react";
 
-export function ActivityInputTracker({ onActivitySaved }: { onActivitySaved?: () => void }) {
+export function ActivityInputTracker({
+  onActivitySaved,
+  onElapsedSecondsChange,
+}: {
+  onActivitySaved?: () => void;
+  onElapsedSecondsChange?: (seconds: number) => void;
+}) {
   const { user } = useAuth();
   const userId = user?.tokenIdentifier || "";
 
@@ -116,6 +122,7 @@ export function ActivityInputTracker({ onActivitySaved }: { onActivitySaved?: ()
 
       if (activeSession.isPaused) {
         setElapsedSeconds(accumulated);
+        onElapsedSecondsChange?.(accumulated);
         return;
       }
 
@@ -137,7 +144,9 @@ export function ActivityInputTracker({ onActivitySaved }: { onActivitySaved?: ()
         diff = Math.max(0, Math.floor((serverAdjustedNow - startedAt) / 1000));
       }
 
-      setElapsedSeconds(accumulated + diff);
+      const next = accumulated + diff;
+      setElapsedSeconds(next);
+      onElapsedSecondsChange?.(next);
     };
 
     // Immediately sync the display.
@@ -324,8 +333,8 @@ export function ActivityInputTracker({ onActivitySaved }: { onActivitySaved?: ()
         <button
           onClick={() => setMode("stopwatch")}
           className={`flex items-center gap-2 px-5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all ${mode === "stopwatch"
-              ? "bg-blue-600 text-white shadow-md shadow-blue-500/30"
-              : "text-slate-400 hover:text-white"
+            ? "bg-blue-600 text-white shadow-md shadow-blue-500/30"
+            : "text-slate-400 hover:text-white"
             }`}
         >
           <Clock className="w-4 h-4" />
@@ -335,8 +344,8 @@ export function ActivityInputTracker({ onActivitySaved }: { onActivitySaved?: ()
         <button
           onClick={() => setMode("manual")}
           className={`flex items-center gap-2 px-5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all ${mode === "manual"
-              ? "bg-blue-600 text-white shadow-md shadow-blue-500/30"
-              : "text-slate-400 hover:text-white"
+            ? "bg-blue-600 text-white shadow-md shadow-blue-500/30"
+            : "text-slate-400 hover:text-white"
             }`}
         >
           <Plus className="w-4 h-4" />
@@ -348,7 +357,7 @@ export function ActivityInputTracker({ onActivitySaved }: { onActivitySaved?: ()
       <div className="bg-gradient-to-b from-[#111C38] to-[#0D152B] border border-slate-700/80 rounded-3xl p-6 sm:p-8 shadow-2xl shadow-black/40 relative overflow-hidden backdrop-blur-md">
         {/* Subtle decorative glow */}
         <div
-          className="absolute -top-24 -right-24 w-60 h-60 rounded-full blur-[90px] opacity-30 pointer-events-none transition-colors duration-500"
+          className="absolute -top-24 -right-24 w-60 h-60 rounded-4xl blur-[90px] opacity-30 pointer-events-none transition-colors duration-500"
           style={{ backgroundColor: activeSession ? activeSession.categoryColor : currentCategoryColor }}
         />
 
@@ -356,7 +365,7 @@ export function ActivityInputTracker({ onActivitySaved }: { onActivitySaved?: ()
         {activeSession ? (
           <div className="space-y-6 text-center">
             {/* Header pill with category badge */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border text-xs font-semibold backdrop-blur-md shadow-sm"
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-4xl border text-xs font-semibold backdrop-blur-md shadow-sm"
               style={{
                 backgroundColor: `${activeSession.categoryColor}15`,
                 borderColor: `${activeSession.categoryColor}40`,
@@ -373,7 +382,7 @@ export function ActivityInputTracker({ onActivitySaved }: { onActivitySaved?: ()
                 {activeSession.activityName}
               </h2>
               <p className="text-xs text-slate-400 mt-1 flex items-center justify-center gap-1.5">
-                <span className={`w-2 h-2 rounded-full ${activeSession.isPaused ? "bg-amber-400" : "bg-emerald-400 animate-pulse"}`} />
+                <span className={`w-2 h-2 rounded-4xl ${activeSession.isPaused ? "bg-amber-400" : "bg-emerald-400 animate-pulse"}`} />
                 {activeSession.isPaused ? "Paused" : "Currently Tracking"}
               </p>
             </div>
@@ -563,8 +572,8 @@ export function ActivityInputTracker({ onActivitySaved }: { onActivitySaved?: ()
                         setIsCategoryPickerOpen(false);
                       }}
                       className={`flex items-center gap-2 p-2 rounded-xl text-xs font-medium border transition-all text-left ${selectedCategory === cat.name
-                          ? "border-blue-500 bg-blue-500/20 text-white"
-                          : "border-slate-800 hover:border-slate-700 bg-slate-950/40 text-slate-300"
+                        ? "border-blue-500 bg-blue-500/20 text-white"
+                        : "border-slate-800 hover:border-slate-700 bg-slate-950/40 text-slate-300"
                         }`}
                     >
                       <div
@@ -594,10 +603,10 @@ export function ActivityInputTracker({ onActivitySaved }: { onActivitySaved?: ()
                       onClick={() => {
                         handleStartStopwatch(item.name);
                       }}
-                      className="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium bg-slate-900/80 hover:bg-slate-800 border border-slate-700 hover:border-slate-600 text-slate-200 hover:text-white transition-all hover:scale-105 active:scale-95 group shadow-sm"
+                      className="flex items-center gap-2 px-3 py-1.5 rounded-4xl text-xs font-medium bg-slate-900/80 hover:bg-slate-800 border border-slate-700 hover:border-slate-600 text-slate-200 hover:text-white transition-all hover:scale-105 active:scale-95 group shadow-sm"
                     >
                       <span
-                        className="w-2 h-2 rounded-full"
+                        className="w-2 h-2 rounded-4xl"
                         style={{ backgroundColor: item.categoryColor }}
                       />
                       <span className="truncate max-w-[130px] font-medium">{item.name}</span>
@@ -616,7 +625,7 @@ export function ActivityInputTracker({ onActivitySaved }: { onActivitySaved?: ()
                 disabled={!activityInput.trim()}
                 className="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-blue-600 via-blue-500 to-sky-500 hover:from-blue-500 hover:to-sky-400 text-white font-bold text-base sm:text-lg shadow-xl shadow-blue-500/25 active:scale-[0.99] transition-all disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-3 group"
               >
-                <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center group-hover:scale-110 transition-transform">
+                <div className="w-8 h-8 rounded-4xl bg-white/20 flex items-center justify-center group-hover:scale-110 transition-transform">
                   <Play className="w-4 h-4 fill-white text-white ml-0.5" />
                 </div>
                 <span>Start Stopwatch</span>
@@ -696,8 +705,8 @@ export function ActivityInputTracker({ onActivitySaved }: { onActivitySaved?: ()
                         setIsCategoryPickerOpen(false);
                       }}
                       className={`flex items-center gap-2 p-2 rounded-xl text-xs font-medium border transition-all text-left ${selectedCategory === cat.name
-                          ? "border-blue-500 bg-blue-500/20 text-white"
-                          : "border-slate-800 hover:border-slate-700 bg-slate-950/40 text-slate-300"
+                        ? "border-blue-500 bg-blue-500/20 text-white"
+                        : "border-slate-800 hover:border-slate-700 bg-slate-950/40 text-slate-300"
                         }`}
                     >
                       <div

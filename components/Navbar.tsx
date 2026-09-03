@@ -85,11 +85,10 @@ export function Navbar({
         <nav className="hidden md:flex items-center gap-1 bg-slate-900/80 p-1 rounded-xl border border-slate-800">
           <button
             onClick={() => setActiveTab("tracker")}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-              activeTab === "tracker"
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${activeTab === "tracker"
                 ? "bg-blue-600 text-white shadow-sm shadow-blue-500/30"
                 : "text-slate-400 hover:text-white hover:bg-white/5"
-            }`}
+              }`}
           >
             <Timer className="w-4 h-4" />
             <span>Tracker</span>
@@ -97,11 +96,10 @@ export function Navbar({
 
           <button
             onClick={() => setActiveTab("analytics")}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-              activeTab === "analytics"
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${activeTab === "analytics"
                 ? "bg-blue-600 text-white shadow-sm shadow-blue-500/30"
                 : "text-slate-400 hover:text-white hover:bg-white/5"
-            }`}
+              }`}
           >
             <BarChart3 className="w-4 h-4" />
             <span>Analytics</span>
@@ -109,11 +107,10 @@ export function Navbar({
 
           <button
             onClick={() => setActiveTab("history")}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-              activeTab === "history"
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${activeTab === "history"
                 ? "bg-blue-600 text-white shadow-sm shadow-blue-500/30"
                 : "text-slate-400 hover:text-white hover:bg-white/5"
-            }`}
+              }`}
           >
             <History className="w-4 h-4" />
             <span>History</span>

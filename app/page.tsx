@@ -20,30 +20,12 @@ export default function Home() {
 
   // Query active session for global indicator
   const activeSession = useQuery(api.activities.getActiveSession, { userId });
+  // Track elapsed seconds from the tracker component so Navbar stays in sync
   const [activeSeconds, setActiveSeconds] = useState(0);
 
+  // Reset header timer when session ends
   useEffect(() => {
-    let interval: NodeJS.Timeout | null = null;
-    if (activeSession) {
-      const calcSecs = () => {
-        const now = Date.now();
-        let secs = activeSession.accumulatedSeconds || 0;
-        if (!activeSession.isPaused) {
-          const diff = Math.floor((now - activeSession.startedAt) / 1000);
-          secs += Math.max(0, diff);
-        }
-        setActiveSeconds(secs);
-      };
-      calcSecs();
-      if (!activeSession.isPaused) {
-        interval = setInterval(calcSecs, 1000);
-      }
-    } else {
-      setActiveSeconds(0);
-    }
-    return () => {
-      if (interval) clearInterval(interval);
-    };
+    if (!activeSession) setActiveSeconds(0);
   }, [activeSession]);
 
   if (isLoading) {
@@ -86,7 +68,10 @@ export default function Home() {
                 Type an activity and AI will auto-categorize it, start your stopwatch, and log your hours.
               </p>
             </div>
-            <ActivityInputTracker onActivitySaved={() => setActiveTab("analytics")} />
+            <ActivityInputTracker
+              onActivitySaved={() => setActiveTab("analytics")}
+              onElapsedSecondsChange={setActiveSeconds}
+            />
           </div>
         )}
 
