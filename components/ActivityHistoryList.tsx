@@ -87,7 +87,7 @@ export function ActivityHistoryList() {
   return (
     <div className="w-full max-w-4xl mx-auto space-y-6">
       {/* Header, Search & Filter Bar */}
-      <div className="bg-gradient-to-b from-[#111C38] to-[#0D152B] p-5 rounded-3xl border border-slate-700/80 shadow-xl space-y-4 backdrop-blur-md">
+      <div className="bg-gradient-to-b from-[#111C38] to-[#0D152B] p-5 rounded-3xl border border-slate-700/80 shadow-xl space-y-4 backdrop-blur-md overflow-hidden">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
             <h2 className="text-lg sm:text-xl font-bold text-white flex items-center gap-2">

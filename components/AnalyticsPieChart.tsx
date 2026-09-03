@@ -171,7 +171,7 @@ export function AnalyticsPieChart() {
   return (
     <div className="w-full max-w-4xl mx-auto space-y-6">
       {/* Header & Controls */}
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 bg-gradient-to-b from-[#111C38] to-[#0D152B] p-4 sm:p-5 rounded-3xl border border-slate-700/80 shadow-xl backdrop-blur-md">
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 bg-gradient-to-b from-[#111C38] to-[#0D152B] p-4 sm:p-5 rounded-3xl border border-slate-700/80 shadow-xl backdrop-blur-md overflow-hidden">
         {/* Timeframe Filter Tabs */}
         <div className="flex items-center gap-1 bg-slate-950/70 p-1 rounded-2xl border border-slate-800 w-full sm:w-fit justify-center">
           <button
@@ -310,7 +310,7 @@ export function AnalyticsPieChart() {
       {/* Main Chart + Breakdown Split */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         {/* Left: Interactive SVG Pie / Donut Chart */}
-        <div className="lg:col-span-5 bg-gradient-to-b from-[#111C38] to-[#0D152B] border border-slate-700/80 rounded-3xl p-6 shadow-xl flex flex-col items-center justify-center text-center relative backdrop-blur-md">
+        <div className="lg:col-span-5 bg-gradient-to-b from-[#111C38] to-[#0D152B] border border-slate-700/80 rounded-3xl p-6 shadow-xl flex flex-col items-center justify-center text-center relative backdrop-blur-md overflow-hidden">
           <h3 className="text-sm font-semibold text-slate-300 uppercase tracking-wider mb-4 flex items-center gap-2">
             <PieIcon className="w-4 h-4 text-sky-400" />
             <span>Category Distribution</span>
@@ -363,7 +363,7 @@ export function AnalyticsPieChart() {
         </div>
 
         {/* Right: Detailed Category Breakdown Table */}
-        <div className="lg:col-span-7 bg-gradient-to-b from-[#111C38] to-[#0D152B] border border-slate-700/80 rounded-3xl p-6 shadow-xl space-y-4 backdrop-blur-md">
+        <div className="lg:col-span-7 bg-gradient-to-b from-[#111C38] to-[#0D152B] border border-slate-700/80 rounded-3xl p-6 shadow-xl space-y-4 backdrop-blur-md overflow-hidden">
           <div className="flex items-center justify-between border-b border-slate-800 pb-3">
             <h3 className="text-sm font-semibold text-slate-300 uppercase tracking-wider flex items-center gap-2">
               <BarChart2 className="w-4 h-4 text-sky-400" />

@@ -365,7 +365,7 @@ export function ActivityInputTracker({
         {activeSession ? (
           <div className="space-y-6 text-center">
             {/* Header pill with category badge */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-4xl border text-xs font-semibold backdrop-blur-md shadow-sm"
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border text-xs font-semibold backdrop-blur-md shadow-sm overflow-hidden"
               style={{
                 backgroundColor: `${activeSession.categoryColor}15`,
                 borderColor: `${activeSession.categoryColor}40`,
@@ -488,7 +488,7 @@ export function ActivityInputTracker({
                     <button
                       type="button"
                       onClick={() => setIsCategoryPickerOpen(!isCategoryPickerOpen)}
-                      className="flex items-center gap-1.5 px-2.5 py-1 rounded-xl text-xs font-semibold border backdrop-blur-md shadow-sm transition-all hover:scale-105 active:scale-95"
+                      className="flex items-center gap-1.5 px-2.5 py-1 rounded-xl text-xs font-semibold border backdrop-blur-md shadow-sm transition-all hover:scale-105 active:scale-95 overflow-hidden"
                       style={{
                         backgroundColor: `${currentCategoryColor}20`,
                         borderColor: `${currentCategoryColor}50`,
@@ -508,7 +508,7 @@ export function ActivityInputTracker({
                 {showSuggestions && activityInput.trim() && filteredSuggestions.length > 0 && (
                   <div
                     ref={suggestionsRef}
-                    className="absolute left-0 right-0 top-full mt-2 bg-[#141F3B] border border-slate-700/90 rounded-2xl shadow-2xl p-2 z-50 max-h-56 overflow-y-auto space-y-1 backdrop-blur-xl"
+                    className="absolute left-0 right-0 top-full mt-2 bg-[#141F3B] border border-slate-700/90 rounded-2xl shadow-2xl p-2 z-50 max-h-56 overflow-y-auto space-y-1 backdrop-blur-xl overflow-hidden"
                   >
                     <div className="px-3 py-1 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
                       Previous Activities
@@ -661,7 +661,7 @@ export function ActivityInputTracker({
                     <button
                       type="button"
                       onClick={() => setIsCategoryPickerOpen(!isCategoryPickerOpen)}
-                      className="flex items-center gap-1.5 px-2.5 py-1 rounded-xl text-xs font-semibold border backdrop-blur-md shadow-sm hover:scale-105"
+                      className="flex items-center gap-1.5 px-2.5 py-1 rounded-xl text-xs font-semibold border backdrop-blur-md shadow-sm hover:scale-105 overflow-hidden"
                       style={{
                         backgroundColor: `${currentCategoryColor}20`,
                         borderColor: `${currentCategoryColor}50`,

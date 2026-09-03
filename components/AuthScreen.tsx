@@ -73,7 +73,7 @@ export function AuthScreen() {
 
           {/* Interactive Feature Badges */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 text-left">
-            <div className="flex items-start gap-3 p-3.5 rounded-xl bg-white/[0.04] border border-white/[0.08] backdrop-blur-sm">
+            <div className="flex items-start gap-3 p-3.5 rounded-xl bg-white/[0.04] border border-white/[0.08] backdrop-blur-sm overflow-hidden">
               <div className="p-2 rounded-lg bg-blue-500/20 text-sky-400 mt-0.5">
                 <BrainCircuit className="w-4 h-4" />
               </div>
@@ -117,7 +117,7 @@ export function AuthScreen() {
 
         {/* Right column: Login Card */}
         <div className="w-full max-w-md">
-          <div className="p-8 sm:p-10 rounded-3xl bg-gradient-to-b from-white/[0.1] to-white/[0.03] border border-white/[0.15] backdrop-blur-xl shadow-2xl shadow-black/50 text-center relative">
+          <div className="p-8 sm:p-10 rounded-3xl bg-gradient-to-b from-white/[0.1] to-white/[0.03] border border-white/[0.15] backdrop-blur-xl shadow-2xl shadow-black/50 text-center relative overflow-hidden">
             <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 mx-auto flex items-center justify-center shadow-lg shadow-blue-500/30 mb-6">
               <Timer className="w-8 h-8 text-white" />
             </div>
