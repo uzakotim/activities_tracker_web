@@ -354,11 +354,16 @@ export function ActivityInputTracker({
       </div>
 
       {/* Main Tracker Container */}
-      <div className="bg-gradient-to-b from-[#111C38] to-[#0D152B] border border-slate-700/80 rounded-3xl p-6 sm:p-8 shadow-2xl shadow-black/40 relative overflow-hidden backdrop-blur-md">
+      <div className="relative isolate overflow-hidden rounded-3xl border border-slate-700/80 bg-gradient-to-b from-[#111C38] to-[#0D152B] p-6 shadow-2xl shadow-black/40 sm:p-8">
         {/* Subtle decorative glow */}
         <div
-          className="absolute -top-24 -right-24 w-60 h-60 rounded-full overflow-hidden blur-[90px] opacity-30 pointer-events-none transition-colors duration-500"
-          style={{ backgroundColor: activeSession ? activeSession.categoryColor : currentCategoryColor }}
+          className="pointer-events-none absolute -right-24 -top-24 h-60 w-60 rounded-full opacity-30 transition-colors duration-500"
+          style={{
+            background: `radial-gradient(circle, ${activeSession
+              ? activeSession.categoryColor
+              : currentCategoryColor
+              } 0%, transparent 60%)`,
+          }}
         />
 
         {/* ACTIVE STOPWATCH RUNNING STATE */}
