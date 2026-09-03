@@ -357,7 +357,7 @@ export function ActivityInputTracker({
       <div className="bg-gradient-to-b from-[#111C38] to-[#0D152B] border border-slate-700/80 rounded-3xl p-6 sm:p-8 shadow-2xl shadow-black/40 relative overflow-hidden backdrop-blur-md">
         {/* Subtle decorative glow */}
         <div
-          className="absolute -top-24 -right-24 w-60 h-60 rounded-full blur-[90px] opacity-30 pointer-events-none transition-colors duration-500"
+          className="absolute -top-24 -right-24 w-60 h-60 rounded-full overflow-hidden blur-[90px] opacity-30 pointer-events-none transition-colors duration-500"
           style={{ backgroundColor: activeSession ? activeSession.categoryColor : currentCategoryColor }}
         />
 
