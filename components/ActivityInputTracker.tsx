@@ -770,7 +770,7 @@ export function ActivityInputTracker({
                   type="date"
                   value={manualDate}
                   onChange={(e) => setManualDate(e.target.value)}
-                  className="w-[100%] min-w-0 max-w-full box-border px-4 py-2.5 rounded-xl bg-slate-950/70 border border-slate-700 text-sm text-white focus:outline-none focus:border-blue-500 font-sans"
+                  className="w-full block px-4 py-2.5 rounded-xl bg-slate-950/70 border border-slate-700 text-sm text-white focus:outline-none focus:border-blue-500 font-sans"
                 />
               </div>
             </div>
