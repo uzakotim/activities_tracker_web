@@ -59,3 +59,17 @@ body {
 .animate-fadeIn {
   animation: fadeIn 0.25s ease-out forwards;
 }
+
+input[type="date"] {
+  /* Forces Safari to respect width and containment rules */
+  display: block; 
+  
+  /* Standardizes sizing constraints */
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  
+  /* Overrides Safari/iOS native rendering limits */
+  min-width: 0; 
+  -webkit-appearance: none;
+}
