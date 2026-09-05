@@ -17,6 +17,10 @@ export const metadata: Metadata = {
   title: "Activity Tracker AI — Smart Time & Category Analytics",
   description:
     "Mobile-friendly activity tracker with AI category classification, live stopwatch, memory suggestions, and interactive pie chart analytics for daily, monthly, and yearly time tracking.",
+  icons: {
+    icon: [{ url: "/icon.svg", type: "image/svg+xml" }],
+    apple: [{ url: "/icon.svg", type: "image/svg+xml" }],
+  },
 };
 
 export const viewport: Viewport = {

@@ -29,8 +29,8 @@ export function AuthScreen() {
       {/* Top Header */}
       <header className="w-full max-w-6xl mx-auto px-6 py-6 flex items-center justify-between z-10">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-sky-400 flex items-center justify-center shadow-lg shadow-blue-500/25">
-            <Timer className="w-6 h-6 text-white" />
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-blue-600 to-sky-400 flex items-center justify-center shadow-md shadow-blue-500/20 group-hover:scale-105 transition-transform">
+            <Timer className="w-5 h-5 text-white" />
           </div>
           <div>
             <span className="font-bold text-xl tracking-tight text-white flex items-center gap-1.5">
