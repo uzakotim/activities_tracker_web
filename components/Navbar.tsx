@@ -53,9 +53,7 @@ export function Navbar({
             onClick={() => setActiveTab("tracker")}
             className="flex items-center gap-2.5 focus:outline-none group text-left"
           >
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-blue-600 to-sky-400 flex items-center justify-center shadow-md shadow-blue-500/20 group-hover:scale-105 transition-transform">
-              <Timer className="w-5 h-5 text-white" />
-            </div>
+            <Image className="w-10 h-10 rounded-xl" src="/icon.png" alt="icon" width={32} height={32} />
             <div>
               <span className="font-bold text-lg tracking-tight flex items-center gap-1.5">
                 Activity<span className="text-sky-400">Tracker</span>
@@ -86,8 +84,8 @@ export function Navbar({
           <button
             onClick={() => setActiveTab("tracker")}
             className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${activeTab === "tracker"
-                ? "bg-blue-600 text-white shadow-sm shadow-blue-500/30"
-                : "text-slate-400 hover:text-white hover:bg-white/5"
+              ? "bg-blue-600 text-white shadow-sm shadow-blue-500/30"
+              : "text-slate-400 hover:text-white hover:bg-white/5"
               }`}
           >
             <Timer className="w-4 h-4" />
@@ -97,8 +95,8 @@ export function Navbar({
           <button
             onClick={() => setActiveTab("analytics")}
             className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${activeTab === "analytics"
-                ? "bg-blue-600 text-white shadow-sm shadow-blue-500/30"
-                : "text-slate-400 hover:text-white hover:bg-white/5"
+              ? "bg-blue-600 text-white shadow-sm shadow-blue-500/30"
+              : "text-slate-400 hover:text-white hover:bg-white/5"
               }`}
           >
             <BarChart3 className="w-4 h-4" />
@@ -108,8 +106,8 @@ export function Navbar({
           <button
             onClick={() => setActiveTab("history")}
             className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${activeTab === "history"
-                ? "bg-blue-600 text-white shadow-sm shadow-blue-500/30"
-                : "text-slate-400 hover:text-white hover:bg-white/5"
+              ? "bg-blue-600 text-white shadow-sm shadow-blue-500/30"
+              : "text-slate-400 hover:text-white hover:bg-white/5"
               }`}
           >
             <History className="w-4 h-4" />
