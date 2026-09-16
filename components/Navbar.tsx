@@ -12,12 +12,15 @@ import {
   Sparkles,
   ChevronDown,
   Circle,
+  Shield,
 } from "lucide-react";
 import { formatSecondsToTimer } from "@/lib/utils";
 
+export type NavTabType = "tracker" | "analytics" | "history" | "stats";
+
 interface NavbarProps {
-  activeTab: "tracker" | "analytics" | "history";
-  setActiveTab: (tab: "tracker" | "analytics" | "history") => void;
+  activeTab: NavTabType;
+  setActiveTab: (tab: NavTabType) => void;
   activeSessionSeconds?: number;
   hasActiveSession?: boolean;
   activeSessionName?: string;
@@ -113,6 +116,17 @@ export function Navbar({
             <History className="w-4 h-4" />
             <span>History</span>
           </button>
+
+          <button
+            onClick={() => setActiveTab("stats")}
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${activeTab === "stats"
+              ? "bg-blue-600 text-white shadow-sm shadow-blue-500/30"
+              : "text-slate-400 hover:text-white hover:bg-white/5"
+              }`}
+          >
+            <Shield className="w-4 h-4" />
+            <span>Stats</span>
+          </button>
         </nav>
 
         {/* User Profile Dropdown */}
@@ -176,6 +190,16 @@ export function Navbar({
                 >
                   <History className="w-4 h-4 text-emerald-400" />
                   <span>All Activities Log</span>
+                </button>
+                <button
+                  onClick={() => {
+                    setActiveTab("stats");
+                    setDropdownOpen(false);
+                  }}
+                  className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs hover:bg-white/10 text-slate-300 hover:text-white transition-colors"
+                >
+                  <Shield className="w-4 h-4 text-amber-400" />
+                  <span>Character RPG Stats</span>
                 </button>
               </div>
 

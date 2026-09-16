@@ -11,6 +11,7 @@
 import type * as activities from "../activities.js";
 import type * as categories from "../categories.js";
 import type * as classify from "../classify.js";
+import type * as stats from "../stats.js";
 import type * as users from "../users.js";
 
 import type {
@@ -23,6 +24,7 @@ declare const fullApi: ApiFromModules<{
   activities: typeof activities;
   categories: typeof categories;
   classify: typeof classify;
+  stats: typeof stats;
   users: typeof users;
 }>;
 

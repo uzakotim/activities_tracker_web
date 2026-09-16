@@ -8,6 +8,8 @@ import { MobileBottomNav } from "@/components/MobileBottomNav";
 import { ActivityInputTracker } from "@/components/ActivityInputTracker";
 import { AnalyticsPieChart } from "@/components/AnalyticsPieChart";
 import { ActivityHistoryList } from "@/components/ActivityHistoryList";
+import { CharacterStatsView } from "@/components/CharacterStatsView";
+import { NavTabType } from "@/components/Navbar";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Sparkles, Loader2 } from "lucide-react";
@@ -16,7 +18,7 @@ export default function Home() {
   const { user, isLoading } = useAuth();
   const userId = user?.tokenIdentifier || "";
 
-  const [activeTab, setActiveTab] = useState<"tracker" | "analytics" | "history">("tracker");
+  const [activeTab, setActiveTab] = useState<NavTabType>("tracker");
 
   // Query active session for global indicator
   const activeSession = useQuery(api.activities.getActiveSession, { userId });
@@ -84,6 +86,12 @@ export default function Home() {
         {activeTab === "history" && (
           <div className="space-y-6 animate-fadeIn">
             <ActivityHistoryList />
+          </div>
+        )}
+
+        {activeTab === "stats" && (
+          <div className="space-y-6 animate-fadeIn">
+            <CharacterStatsView />
           </div>
         )}
       </main>

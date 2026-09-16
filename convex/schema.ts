@@ -56,4 +56,29 @@ export default defineSchema({
   })
     .index("by_tokenIdentifier", ["tokenIdentifier"])
     .index("by_email", ["email"]),
+
+  userStats: defineTable({
+    userId: v.string(),
+    statKey: v.string(),
+    xp: v.number(),
+    level: v.number(),
+    streak: v.number(),
+    longestStreak: v.number(),
+    lastCompletedDate: v.optional(v.string()),
+    totalCompletions: v.number(),
+  })
+    .index("by_userId_and_statKey", ["userId", "statKey"])
+    .index("by_userId", ["userId"]),
+
+  statCompletions: defineTable({
+    userId: v.string(),
+    statKey: v.string(),
+    date: v.string(),
+    xpGained: v.number(),
+    actionTitle: v.string(),
+    completedAt: v.number(),
+  })
+    .index("by_userId_and_date", ["userId", "date"])
+    .index("by_userId_and_statKey", ["userId", "statKey"])
+    .index("by_userId", ["userId"]),
 });

@@ -1,11 +1,12 @@
 "use client";
 
 import React from "react";
-import { Timer, BarChart3, History } from "lucide-react";
+import { Timer, BarChart3, History, Shield } from "lucide-react";
+import { NavTabType } from "./Navbar";
 
 interface MobileBottomNavProps {
-  activeTab: "tracker" | "analytics" | "history";
-  setActiveTab: (tab: "tracker" | "analytics" | "history") => void;
+  activeTab: NavTabType;
+  setActiveTab: (tab: NavTabType) => void;
   hasActiveSession?: boolean;
 }
 
@@ -15,12 +16,12 @@ export function MobileBottomNav({
   hasActiveSession = false,
 }: MobileBottomNavProps) {
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-40 md:hidden bg-[#0B132B]/90 backdrop-blur-xl border-t border-slate-800 px-6 py-2 pb-safe">
+    <div className="fixed bottom-0 left-0 right-0 z-40 md:hidden bg-[#0B132B]/90 backdrop-blur-xl border-t border-slate-800 px-4 py-2 pb-safe">
       <div className="flex items-center justify-around max-w-md mx-auto">
         {/* Tracker Tab */}
         <button
           onClick={() => setActiveTab("tracker")}
-          className={`flex flex-col items-center gap-1 py-1 px-4 rounded-xl transition-all relative ${
+          className={`flex flex-col items-center gap-1 py-1 px-3 rounded-xl transition-all relative ${
             activeTab === "tracker"
               ? "text-sky-400 font-semibold scale-105"
               : "text-slate-400 hover:text-slate-200"
@@ -38,7 +39,7 @@ export function MobileBottomNav({
         {/* Analytics Tab */}
         <button
           onClick={() => setActiveTab("analytics")}
-          className={`flex flex-col items-center gap-1 py-1 px-4 rounded-xl transition-all ${
+          className={`flex flex-col items-center gap-1 py-1 px-3 rounded-xl transition-all ${
             activeTab === "analytics"
               ? "text-sky-400 font-semibold scale-105"
               : "text-slate-400 hover:text-slate-200"
@@ -51,7 +52,7 @@ export function MobileBottomNav({
         {/* History Tab */}
         <button
           onClick={() => setActiveTab("history")}
-          className={`flex flex-col items-center gap-1 py-1 px-4 rounded-xl transition-all ${
+          className={`flex flex-col items-center gap-1 py-1 px-3 rounded-xl transition-all ${
             activeTab === "history"
               ? "text-sky-400 font-semibold scale-105"
               : "text-slate-400 hover:text-slate-200"
@@ -59,6 +60,19 @@ export function MobileBottomNav({
         >
           <History className="w-5 h-5" />
           <span className="text-[11px]">History</span>
+        </button>
+
+        {/* Stats Tab */}
+        <button
+          onClick={() => setActiveTab("stats")}
+          className={`flex flex-col items-center gap-1 py-1 px-3 rounded-xl transition-all ${
+            activeTab === "stats"
+              ? "text-sky-400 font-semibold scale-105"
+              : "text-slate-400 hover:text-slate-200"
+          }`}
+        >
+          <Shield className="w-5 h-5" />
+          <span className="text-[11px]">Stats</span>
         </button>
       </div>
     </div>
