@@ -202,21 +202,13 @@ export function CharacterStatsView() {
                 </span>
               </div>
               <p className="text-xs sm:text-sm text-slate-400">
-                Life RPG Character Sheet • Level 0 to 200+ Unlimited Progression • Fortify stats daily
+                Life RPG Character Sheet • Fortify stats daily to unlock mental & physical resilience
               </p>
             </div>
           </div>
 
           {/* Overall Stats Badges */}
           <div className="flex items-center gap-2.5 sm:gap-3 w-full md:w-auto justify-between sm:justify-start border-t md:border-t-0 pt-4 md:pt-0 border-slate-800 flex-wrap">
-            <div className="bg-slate-900/80 border border-slate-800 rounded-xl px-3.5 py-2 text-center min-w-[85px]">
-              <span className="text-[10px] text-slate-400 uppercase font-bold tracking-wider block">
-                Total Level
-              </span>
-              <span className="text-lg font-black text-amber-400 font-mono">
-                LVL {archetype.totalLevel}
-              </span>
-            </div>
 
             <div className="bg-slate-900/80 border border-slate-800 rounded-xl px-3.5 py-2 text-center min-w-[85px]">
               <span className="text-[10px] text-slate-400 uppercase font-bold tracking-wider block">
@@ -427,11 +419,10 @@ export function CharacterStatsView() {
           return (
             <div
               key={stat.statKey}
-              className={`rounded-2xl bg-[#0F1833]/90 border transition-all duration-300 backdrop-blur-md overflow-hidden ${
-                stat.isCompletedToday
+              className={`rounded-2xl bg-[#0F1833]/90 border transition-all duration-300 backdrop-blur-md overflow-hidden ${stat.isCompletedToday
                   ? "border-emerald-500/40 shadow-lg shadow-emerald-500/5"
                   : def.borderColor
-              }`}
+                }`}
             >
               {/* Card Header & Main Stats */}
               <div className="p-5 sm:p-6 space-y-4">
