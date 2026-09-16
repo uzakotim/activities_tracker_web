@@ -16,16 +16,15 @@ export function MobileBottomNav({
   hasActiveSession = false,
 }: MobileBottomNavProps) {
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-40 md:hidden bg-[#0B132B]/90 backdrop-blur-xl border-t border-slate-800 px-4 py-2 pb-safe">
+    <div className="fixed bottom-3 left-0 right-0 z-40 md:hidden bg-[#0B132B]/90 backdrop-blur-xl border-t border-slate-800 px-4 py-2 pb-safe">
       <div className="flex items-center justify-around max-w-md mx-auto">
         {/* Tracker Tab */}
         <button
           onClick={() => setActiveTab("tracker")}
-          className={`flex flex-col items-center gap-1 py-1 px-3 rounded-xl transition-all relative ${
-            activeTab === "tracker"
-              ? "text-sky-400 font-semibold scale-105"
-              : "text-slate-400 hover:text-slate-200"
-          }`}
+          className={`flex flex-col items-center gap-1 py-1 px-3 rounded-xl transition-all relative ${activeTab === "tracker"
+            ? "text-sky-400 font-semibold scale-105"
+            : "text-slate-400 hover:text-slate-200"
+            }`}
         >
           <div className="relative">
             <Timer className="w-5 h-5" />
@@ -39,11 +38,10 @@ export function MobileBottomNav({
         {/* Analytics Tab */}
         <button
           onClick={() => setActiveTab("analytics")}
-          className={`flex flex-col items-center gap-1 py-1 px-3 rounded-xl transition-all ${
-            activeTab === "analytics"
-              ? "text-sky-400 font-semibold scale-105"
-              : "text-slate-400 hover:text-slate-200"
-          }`}
+          className={`flex flex-col items-center gap-1 py-1 px-3 rounded-xl transition-all ${activeTab === "analytics"
+            ? "text-sky-400 font-semibold scale-105"
+            : "text-slate-400 hover:text-slate-200"
+            }`}
         >
           <BarChart3 className="w-5 h-5" />
           <span className="text-[11px]">Analytics</span>
@@ -52,11 +50,10 @@ export function MobileBottomNav({
         {/* History Tab */}
         <button
           onClick={() => setActiveTab("history")}
-          className={`flex flex-col items-center gap-1 py-1 px-3 rounded-xl transition-all ${
-            activeTab === "history"
-              ? "text-sky-400 font-semibold scale-105"
-              : "text-slate-400 hover:text-slate-200"
-          }`}
+          className={`flex flex-col items-center gap-1 py-1 px-3 rounded-xl transition-all ${activeTab === "history"
+            ? "text-sky-400 font-semibold scale-105"
+            : "text-slate-400 hover:text-slate-200"
+            }`}
         >
           <History className="w-5 h-5" />
           <span className="text-[11px]">History</span>
@@ -65,11 +62,10 @@ export function MobileBottomNav({
         {/* Stats Tab */}
         <button
           onClick={() => setActiveTab("stats")}
-          className={`flex flex-col items-center gap-1 py-1 px-3 rounded-xl transition-all ${
-            activeTab === "stats"
-              ? "text-sky-400 font-semibold scale-105"
-              : "text-slate-400 hover:text-slate-200"
-          }`}
+          className={`flex flex-col items-center gap-1 py-1 px-3 rounded-xl transition-all ${activeTab === "stats"
+            ? "text-sky-400 font-semibold scale-105"
+            : "text-slate-400 hover:text-slate-200"
+            }`}
         >
           <Shield className="w-5 h-5" />
           <span className="text-[11px]">Stats</span>

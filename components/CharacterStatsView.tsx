@@ -769,7 +769,7 @@ export function CharacterStatsView() {
                       </div>
 
                       {/* Active Habit Snippet */}
-                      <div className="bg-slate-950/50 border border-slate-800/80 rounded-xl p-2.5 text-xs flex items-center justify-between gap-2">
+                      {/* <div className="bg-slate-950/50 border border-slate-800/80 rounded-xl p-2.5 text-xs flex items-center justify-between gap-2">
                         <span className="text-[11px] text-slate-300 font-medium truncate">
                           {currentSuggestion.title}
                         </span>
@@ -782,7 +782,7 @@ export function CharacterStatsView() {
                         >
                           <Shuffle className="w-2.5 h-2.5" />
                         </button>
-                      </div>
+                      </div> */}
                     </div>
 
                     {/* Card Footer: Action Button */}
@@ -1152,17 +1152,21 @@ export function CharacterStatsView() {
                       <span className="font-bold text-white truncate text-[11px]">
                         {def?.name || item.statKey}
                       </span>
-                      <span className="text-[10px] text-emerald-400 font-mono font-bold">
-                        +{item.xpGained} XP
-                      </span>
+                      <div className="flex flex-row gap-4">
+                        <span className="text-[10px] text-emerald-400 font-mono font-bold">
+                          +{item.xpGained} XP
+                        </span>
+                        <span className="text-[9px] text-slate-500 font-mono shrink-0">
+                          {dateStr}
+                        </span>
+                      </div>
+
+
                     </div>
                     <p className="text-[10px] text-slate-400 truncate">
                       {item.actionTitle}
                     </p>
                   </div>
-                  <span className="text-[9px] text-slate-500 font-mono shrink-0">
-                    {dateStr}
-                  </span>
                 </div>
               );
             })}
