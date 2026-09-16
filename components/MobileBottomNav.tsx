@@ -16,8 +16,8 @@ export function MobileBottomNav({
   hasActiveSession = false,
 }: MobileBottomNavProps) {
   return (
-    <div className="fixed bottom-3 left-0 right-0 z-40 md:hidden bg-[#0B132B]/90 backdrop-blur-xl border-t border-slate-800 px-4 py-2 pb-safe">
-      <div className="flex items-center justify-around max-w-md mx-auto">
+    <div className="fixed bottom-0 h-18 left-0 right-0 z-40 md:hidden bg-[#0B132B]/90 backdrop-blur-xl border-t border-slate-800 px-4 py-2 pb-safe">
+      <div className="flex items-center justify-around max-w-md mx-auto ">
         {/* Tracker Tab */}
         <button
           onClick={() => setActiveTab("tracker")}
