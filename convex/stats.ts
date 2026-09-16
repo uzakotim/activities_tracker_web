@@ -144,11 +144,11 @@ export const completeStatAction = mutation({
     }
 
     const newXp = (existing?.xp ?? 0) + xpToAdd;
-    // Calculate level (Level 0: 0-99, Level 1: 100-249, Level 2: 250-449...)
+    // Calculate stat level (starts at 0, higher levels require more XP, unlimited)
     let calculatedLevel = 0;
     let accumulated = 0;
     while (true) {
-      const span = 100 + calculatedLevel * 50;
+      const span = 50 + calculatedLevel * 20;
       if (newXp < accumulated + span) break;
       accumulated += span;
       calculatedLevel += 1;

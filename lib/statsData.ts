@@ -399,19 +399,18 @@ export const STATS_CATALOG: Record<StatKey, StatDefinition> = {
 };
 
 /**
- * Level Formula:
- * Level 0: 0 - 99 XP (100 XP span)
- * Level 1: 100 - 249 XP (150 XP span)
- * Level 2: 250 - 449 XP (200 XP span)
- * Level 3: 450 - 699 XP (250 XP span)
- * Level L: requires base (100) + level * 50 XP
+ * Individual Stat Level Formula (starts at 0, unlimited):
+ * Level 0: 0 - 49 XP (50 XP span)
+ * Level 1: 50 - 119 XP (70 XP span)
+ * Level 2: 120 - 209 XP (90 XP span)
+ * Higher levels require progressively more XP (+20 XP per level). Unlimited progression.
  */
 export function getLevelAndProgress(xp: number) {
   if (xp <= 0) {
     return {
       level: 0,
       currentLevelXp: 0,
-      xpForNextLevel: 100,
+      xpForNextLevel: 50,
       percent: 0,
     };
   }
@@ -420,7 +419,7 @@ export function getLevelAndProgress(xp: number) {
   let accumulated = 0;
 
   while (true) {
-    const span = 100 + level * 50;
+    const span = 50 + level * 20;
     if (xp < accumulated + span) {
       const currentLevelXp = xp - accumulated;
       const percent = Math.min(100, Math.round((currentLevelXp / span) * 100));
@@ -437,19 +436,113 @@ export function getLevelAndProgress(xp: number) {
 }
 
 /**
- * Compute overall character title based on dominant stats
+ * Total Character Level Formula (from 0 to 200 and unlimited):
+ * Higher level requires progressively more XP.
+ * Level 0: 0 - 49 XP (50 XP span)
+ * Level 1: 50 - 114 XP (65 XP span)
+ * Level 2: 115 - 194 XP (80 XP span)
+ * ...
+ * Level 200: ~308,500 total XP
+ * Unlimited: Continues beyond 200 (Level 201, 202, ...) with no hard ceiling.
+ */
+export function getTotalLevelAndProgress(totalXp: number) {
+  if (totalXp <= 0) {
+    return {
+      level: 0,
+      currentLevelXp: 0,
+      xpForNextLevel: 50,
+      percent: 0,
+      isBeyond200: false,
+    };
+  }
+
+  let level = 0;
+  let accumulated = 0;
+
+  while (true) {
+    // Each level requires progressively more XP
+    const span = 50 + level * 15;
+    if (totalXp < accumulated + span) {
+      const currentLevelXp = totalXp - accumulated;
+      const percent = Math.min(100, Math.round((currentLevelXp / span) * 100));
+      return {
+        level,
+        currentLevelXp,
+        xpForNextLevel: span,
+        percent,
+        isBeyond200: level >= 200,
+      };
+    }
+    accumulated += span;
+    level += 1;
+  }
+}
+
+export function getTierMilestone(level: number): {
+  tierName: string;
+  badgeColor: string;
+  isMaxTier: boolean;
+} {
+  if (level >= 200) {
+    return {
+      tierName: "Transcendent Legend",
+      badgeColor: "from-amber-400 via-rose-500 to-purple-500 text-white",
+      isMaxTier: true,
+    };
+  }
+  if (level >= 150) {
+    return {
+      tierName: "Grandmaster Ascendant",
+      badgeColor: "from-purple-500 to-indigo-500 text-white",
+      isMaxTier: false,
+    };
+  }
+  if (level >= 100) {
+    return {
+      tierName: "Master Sovereign",
+      badgeColor: "from-indigo-500 to-sky-500 text-white",
+      isMaxTier: false,
+    };
+  }
+  if (level >= 50) {
+    return {
+      tierName: "Heroic Paragon",
+      badgeColor: "from-sky-500 to-emerald-500 text-white",
+      isMaxTier: false,
+    };
+  }
+  if (level >= 20) {
+    return {
+      tierName: "Adept Pioneer",
+      badgeColor: "from-emerald-500 to-teal-500 text-white",
+      isMaxTier: false,
+    };
+  }
+  return {
+    tierName: "Novice Aspirant",
+    badgeColor: "from-blue-500 to-slate-600 text-white",
+    isMaxTier: false,
+  };
+}
+
+/**
+ * Compute overall character title based on dominant stats and total level
  */
 export function getCharacterArchetype(stats: { statKey: string; xp: number }[]): {
   title: string;
   highestStat: string;
   totalXp: number;
   totalLevel: number;
+  currentLevelXp: number;
+  xpForNextLevel: number;
+  percent: number;
+  tierName: string;
+  isBeyond200: boolean;
 } {
   const totalXp = stats.reduce((acc, s) => acc + (s.xp || 0), 0);
-  const totalLevel = stats.reduce((acc, s) => {
-    const { level } = getLevelAndProgress(s.xp || 0);
-    return acc + level;
-  }, 0);
+  const { level: totalLevel, currentLevelXp, xpForNextLevel, percent, isBeyond200 } =
+    getTotalLevelAndProgress(totalXp);
+  const { tierName } = getTierMilestone(totalLevel);
 
   if (totalXp === 0) {
     return {
@@ -457,6 +550,11 @@ export function getCharacterArchetype(stats: { statKey: string; xp: number }[]):
       highestStat: "vigor",
       totalXp: 0,
       totalLevel: 0,
+      currentLevelXp: 0,
+      xpForNextLevel: 50,
+      percent: 0,
+      tierName: "Novice Aspirant",
+      isBeyond200: false,
     };
   }
 
@@ -477,5 +575,10 @@ export function getCharacterArchetype(stats: { statKey: string; xp: number }[]):
     highestStat,
     totalXp,
     totalLevel,
+    currentLevelXp,
+    xpForNextLevel,
+    percent,
+    tierName,
+    isBeyond200,
   };
 }
